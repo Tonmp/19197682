@@ -39,9 +39,7 @@ jobs:
       env:
           # Some warnings upgraded to errors to match Open Build Service platforms
           CXXFLAGS: "-Werror=address -Werror=return-type"
-      run: |
-        mkdir build && cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/custom -DCMAKE_BUILD_TYPE=Release 
+      run: cmake .. -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/custom -DCMAKE_BUILD_TYPE=Release 
     - run: make && make install  
     - uses: actions/upload-artifact@v3
       env:
