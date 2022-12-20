@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-      name: fish-shell/fish-shell 
+        name: fish-shell/fish-shell 
     - name: Install deps
       run: |
         apt update
