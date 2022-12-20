@@ -41,7 +41,7 @@ jobs:
           # Some warnings upgraded to errors to match Open Build Service platforms
           CXXFLAGS: "-Werror=address -Werror=return-type"
       run: cd fish-shell && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/custom -DCMAKE_BUILD_TYPE=Release 
-    - run: make && make install  
+    - run: cd fish-shell make && make install  
     - uses: actions/upload-artifact@v3
       env:
         _name: ""
