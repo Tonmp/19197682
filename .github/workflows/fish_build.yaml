@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        name: fish-shell/fish-shell 
+        repository: fish-shell/fish-shell 
         path: fish-shell
     - name: Install deps
       run: |
