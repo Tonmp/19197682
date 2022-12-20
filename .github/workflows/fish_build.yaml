@@ -1,0 +1,51 @@
+name: make test
+
+on: [workflow_dispatch ]
+
+env:
+  CTEST_PARALLEL_LEVEL: "1"
+  CMAKE_BUILD_PARALLEL_LEVEL: "4"
+
+permissions:
+  contents: read
+
+jobs: 
+  build: 
+    strategy:
+      matrix:
+        include:
+          - ubuntu-version: "ubuntu:18.04"
+            name: fish_ubuntu1804
+          # - ubuntu-version: "ubuntu:20.04"
+          #   name: fish_ubuntu2004 
+    runs-on: ubuntu-latest
+    container: ${{ matrix.ubuntu-version }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+      name: fish-shell/fish-shell 
+    - name: Install deps
+      run: |
+        apt update
+        apt install -y gettext libncurses5-dev python3-pip tmux locales git
+        pip3 install pexpect
+        # Generate a locale that uses a comma as decimal separator.
+        locale-gen fr_FR.UTF-8
+    - name: setup cmake 
+      uses: jwlawson/actions-setup-cmake@v1.13
+      with:
+        cmake-version: 'latest'
+    - name: cmake
+      env:
+          # Some warnings upgraded to errors to match Open Build Service platforms
+          CXXFLAGS: "-Werror=address -Werror=return-type"
+      run: |
+        mkdir build && cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/custom -DCMAKE_BUILD_TYPE=Release 
+    - run: make && make install  
+    - uses: actions/upload-artifact@v3
+      env:
+        _name: ""
+      with:
+        name: ${{ matrix.name }} 
+        path: ${{ github.workspace }}/custom
