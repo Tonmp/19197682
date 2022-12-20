@@ -1,6 +1,6 @@
-name: make test
+name: fish build
 
-on: [workflow_dispatch ]
+on: [workflow_dispatch]
 
 env:
   CTEST_PARALLEL_LEVEL: "1"
